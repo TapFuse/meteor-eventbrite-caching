@@ -6,7 +6,7 @@ var event = eventbrite.events(''); //event, that's tracked, id
 
 //Insert used to cache tweets from stream.
 var wrappedAttendeeInsert = Meteor.bindEnvironment(function(attendee) {
-  tp_eventbriteCache.insert({
+  tp_eventbriteCache.upsert(attendee.order_id, {
   "_id": attendee.order_id,
   "team": attendee.team,
   "id": attendee.id,
@@ -49,6 +49,9 @@ Meteor.startup(function () {
 
 Meteor.methods({
   webhookNewAttendee: function(data) {
+  	// event.attendees(data.config.user_id).info(function (err, attendeeData) {
+  	// 	wrappedAttendeeInsert(attendeeData);
+  	// })
   	console.log(data);
   },
 });
