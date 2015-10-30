@@ -16,7 +16,6 @@ var wrappedAttendeeInsert = Meteor.bindEnvironment(function(attendee) {
   "profile": attendee.profile,
   "barcodes": attendee.barcodes,
   "answers": attendee.answers,
-  "costs": attendee.costs,
   "checked_in": attendee.checked_in,
   "cancelled": attendee.cancelled,
   "refunded": attendee.refunded,
@@ -35,6 +34,20 @@ var wrappedAttendeeInsert = Meteor.bindEnvironment(function(attendee) {
 //Catch-up
 Meteor.startup(function () {
 	//code for catching up with tickets bought before the app started receiving webhooks
+	SyncedCron.start();
+});
+
+SyncedCron.add({
+  name: 'Sync and update eventbrite user cache',
+  schedule: function(parser) {
+    return parser.text('every 10 minutes');
+  },
+  job: function() {
+    return syncData();
+  }
+});
+
+function syncData() {
 	event.attendees().list().then(function (data) {
 		for(attendee in data.attendees) {
 		  event.attendees(data.attendees[attendee].id).info(function (err, attendeeData) {
@@ -45,7 +58,7 @@ Meteor.startup(function () {
 	}, function (err) {
 	  console.log(err);
 	});
-});
+}
 
 Meteor.methods({
   webhookNewAttendee: function(data) {

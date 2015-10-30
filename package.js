@@ -18,8 +18,9 @@ Package.onUse(function(api) {
   api.use('tapfuse:collection-global@1.0.0');
   api.use('tapfuse:eventbrite-api');
   api.use('mongo');
-  api.use('iron:router@1.0.8')
-  api.use('iron:core@1.0.8')
+  api.use('iron:router@1.0.8');
+  api.use('iron:core@1.0.8');
+  api.use('percolate:synced-cron@1.3.0');
 
   //Files
   api.addFiles('eventbrite-caching-server.js', S);
