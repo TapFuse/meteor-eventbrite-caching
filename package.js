@@ -1,19 +1,31 @@
 Package.describe({
   name: 'tapfuse:eventbrite-caching',
   version: '0.0.1',
-  // Brief, one-line summary of the package.
-  summary: '',
-  // URL to the Git repository containing the source code for this package.
-  git: '',
-  // By default, Meteor will default to using README.md for documentation.
-  // To avoid submitting documentation, set this field to null.
+  summary: 'Eventbrite caching for meteor',
+  git: 'https://github.com/TapFuse/meteor-eventbrite-caching.git',
   documentation: 'README.md'
 });
+
+var S = 'server';
+var C = 'client';
+var CS = [C, S];
 
 Package.onUse(function(api) {
   api.versionsFrom('1.2.0.1');
   api.use('ecmascript');
-  api.addFiles('eventbrite-caching.js');
+
+  //Dependency
+  api.use('tapfuse:collection-global@1.0.0');
+  api.use('tapfuse:eventbrite-api');
+  api.use('mongo');
+  api.use('iron:router@1.0.8')
+  api.use('iron:core@1.0.8')
+
+  //Files
+  api.addFiles('eventbrite-caching-server.js', S);
+  api.addFiles('eventbrite-caching-both.js', CS);
+  api.addFiles('globals-client.js', C);
+  api.addFiles('globals-server.js', S);
 });
 
 Package.onTest(function(api) {
